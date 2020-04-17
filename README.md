@@ -14,7 +14,77 @@ Input:
 
 Output: 1->1->2->3->4->4->5->6
 
-# Implementation :
+# Implementation 1 : Naive 
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists == null || lists.length  == 0)
+            return null;
+        if(lists.length == 1)
+            return lists[0];
+        
+        ListNode mergedList = mergeTwoLists(lists[0], lists[1]);
+        for(int i = 2; i < lists.length; i++) {
+             mergedList = mergeTwoLists(mergedList, lists[i]);   
+        }
+        return mergedList;
+    }
+    
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if(l1 == null || l2 == null)
+            return (l1 == null) ? l2 : l1;
+        ListNode p1 = l1;
+        ListNode p2 = l2;
+        
+        ListNode head = null;
+        ListNode node = null;
+        ListNode current = null;
+        
+        while(p1 != null && p2 != null) {
+            if(p1.val <= p2.val) {
+                node = new ListNode(p1.val);
+                p1 = p1.next;
+            } else {
+                node = new ListNode(p2.val);
+                p2 = p2.next;
+            }    
+            
+            if(head == null) {
+                head = node;
+                current = node;
+            } else {
+                current.next = node;
+                current = node;
+            }
+        }
+        
+        while(p1 != null) {
+            node = new ListNode(p1.val);
+            current.next = node;
+            current = node;
+            p1 = p1.next;
+        }
+        while(p2 != null) {
+            node = new ListNode(p2.val);
+            current.next = node;
+            current = node;
+            p2 = p2.next;
+        }
+        return head;
+        
+    }
+}
+```
+
+# Implementation 2 :
 
 ```java
 /**
